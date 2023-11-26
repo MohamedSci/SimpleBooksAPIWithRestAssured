@@ -9,7 +9,7 @@ public class OrderClo {
     String customerName;
     String createdBy;
     int quantity;
-    int timestamp;
+    long timestamp;
 
     public OrderClo(String id, int bookId, String customerName, String createdBy, int quantity, int timestamp) {
         this.id = id;

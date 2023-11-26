@@ -22,7 +22,7 @@ import io.cucumber.testng.AbstractTestNGCucumberTests;
 import io.cucumber.testng.CucumberOptions;
 import org.testng.annotations.DataProvider;
 
-@CucumberOptions(features = "src/test/resources/features", glue = { "steps" }, plugin = { "pretty",
-		"html:target/cucumber-html-report.html" })
+@CucumberOptions(features = "src/test/resources/features", glue = {"steps"}, plugin = {"pretty",
+        "html:target/cucumber-html-report.html"})
 public class RunCucumberTest extends AbstractTestNGCucumberTests {
 }
