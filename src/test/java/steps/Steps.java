@@ -32,6 +32,8 @@ public class Steps {
 	public static String bookAvailable;
 	BookClo bookIns;
 	List<BookClo> bookListEx;
+	List<OrderClo> orderListEx;
+
 //	Java convert JSON String  has list of json objects to equivalent list of Java class Object.
 	public static <T> List<T> stringJsonToObjectArray(String s, Class<T[]> clazz) {
 		T[] arr = new Gson().fromJson(s, clazz);
@@ -139,11 +141,12 @@ public class Steps {
 	@Then("The User Checks the recently Submitted Order to be found in the response, the Order is found")
 	public void userChecksTheRecentlySubmittedOrderToBeFoundInTheResponseTheOrderIsFound() {
 		jsonString = response.asString();
-		List<Map<String, String>> booksOfUser = JsonPath.from(jsonString).get("orders");
-        Assert.assertFalse(booksOfUser.isEmpty());
+		System.out.println("------------- ×Order List ********************");
+		System.out.println(jsonString);
+		orderListEx = stringJsonToObjectArray(response.asString(), OrderClo[].class);
 		ArrayList<Object> orderIdsList = new ArrayList<>();
-        for (Map<String, String> stringStringMap : booksOfUser) {
-            orderIdsList.add(stringStringMap.get("id"));
+        for (OrderClo orderClo : orderListEx) {
+            orderIdsList.add(orderClo.getId());
         }
 		Assert.assertTrue(orderIdsList.contains(ordrId));
 	}
@@ -160,8 +163,8 @@ public class Steps {
 	@Then("The User Checks the recently Submitted Order to be found in the Single Order response, the Order is found")
 	public void userChecksTheRecentlySubmittedOrderToBeFoundInTheSingleOrderResponseTheOrderIsFound() {
 		jsonString = response.asString();
-		Map<String, String> booksOfUser = JsonPath.from(jsonString).get("order");
-        Assert.assertEquals(booksOfUser.get("id"), ordrId);
+		OrderClo orderEx = stringToObject(jsonString,OrderClo.class);
+        Assert.assertEquals(String.valueOf(orderEx.getId()), ordrId);
 	}
 
 	@When("The User updates a Book from his Orders list using the Book s Order id")
@@ -208,7 +211,7 @@ public void userChecksAgainTheRecentlySubmittedOrderToBeFoundInTheResponseTheOrd
 	jsonString = response.asString();
 	List<Map<String, String>> booksOfUser = JsonPath.from(jsonString).get("orders");
 	Assert.assertEquals(booksOfUser.size(),0);
-	ArrayList<Object> orderIdsList = new ArrayList<>();
+	ArrayList<String> orderIdsList = new ArrayList<>();
     for (Map<String, String> stringStringMap : booksOfUser) {
         orderIdsList.add(stringStringMap.get("id"));
     }

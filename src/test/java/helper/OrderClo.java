@@ -4,16 +4,19 @@ import lombok.*;
 
 @Getter
 public class OrderClo {
-    int id;
-    String name;
-    String type;
-    Boolean available;
+    String id;
+    int bookId;
+    String customerName;
+    String createdBy;
+    int quantity;
+    int timestamp;
 
-
-    public OrderClo(int id, String name, String type, Boolean available) {
+    public OrderClo(String id, int bookId, String customerName, String createdBy, int quantity, int timestamp) {
         this.id = id;
-        this.name = name;
-        this.type = type;
-        this.available = available;
+        this.bookId = bookId;
+        this.customerName = customerName;
+        this.createdBy = createdBy;
+        this.quantity = quantity;
+        this.timestamp = timestamp;
     }
 }
