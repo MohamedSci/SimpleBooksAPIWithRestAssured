@@ -25,12 +25,4 @@ import org.testng.annotations.DataProvider;
 @CucumberOptions(features = "src/test/resources/features", glue = { "steps" }, plugin = { "pretty",
 		"html:target/cucumber-html-report.html" })
 public class RunCucumberTest extends AbstractTestNGCucumberTests {
-
-
-//    @DataProvider(parallel = true)
-//    @Override
-//    public Object[][] scenarios() {
-//        return super.scenarios();
-//    }
-
 }

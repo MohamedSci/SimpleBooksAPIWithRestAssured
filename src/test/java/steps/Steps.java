@@ -33,11 +33,14 @@ public class Steps {
 	BookClo bookIns;
 	List<BookClo> bookListEx;
 //	Java convert JSON String  has list of json objects to equivalent list of Java class Object.
-	public static <T> List<T> stringToArray(String s, Class<T[]> clazz) {
+	public static <T> List<T> stringJsonToObjectArray(String s, Class<T[]> clazz) {
 		T[] arr = new Gson().fromJson(s, clazz);
 		return Arrays.asList(arr); //or return Arrays.asList(new Gson().fromJson(s, clazz)); for a one-liner
 	}
-
+	//	Java convert JSON String  has list of json objects to equivalent list of Java class Object.
+	public static <T> T stringToObject(String s, Class<T> clazz) {
+        return new Gson().fromJson(s, clazz); //or return Arrays.asList(new Gson().fromJson(s, clazz)); for a one-liner
+	}
 	@Given("I am an authorized User")
 	public void iAmAnAuthorizedUser() {
 		RestAssured.baseURI = BASE_URL;
@@ -77,7 +80,7 @@ public class Steps {
 
 	@Then("The User stores the data of a certain Book")
 	public void userStoresTheDataOfACertainBook() {
-		bookListEx = stringToArray(response.asString(), BookClo[].class);
+		bookListEx = stringJsonToObjectArray(response.asString(), BookClo[].class);
 		bookIns = bookListEx.get(0);
 		System.out.println("bookCl.getId(): " + bookIns.getId());
 		System.out.println("bookCl.getName() : " + bookIns.getName());
@@ -96,11 +99,11 @@ public class Steps {
 	@Then("The Validation of response data retrieved from ALL Books and Single Books APIs are the Identical")
 	public void validationOfResponseDataRetrievedFromALLBooksandSingleBooksAPIsAreTheIdentical() {
 		jsonString = response.asString();
-		Map<String, String> book = JsonPath.from(jsonString).get("book");
-		Assert.assertEquals(bookId, String.valueOf(bookIns.getId()));
-		Assert.assertEquals(bookName, bookIns.getName());
-		Assert.assertEquals(bookType, bookIns.getType());
-		Assert.assertEquals(bookAvailable, String.valueOf(bookIns.getAvailable()));
+		BookClo bookSingle = stringToObject(jsonString,BookClo.class);
+		Assert.assertEquals(bookSingle.getId(), bookIns.getId());
+		Assert.assertEquals(bookSingle.getName(), bookIns.getName());
+		Assert.assertEquals(bookSingle.getType(), bookIns.getType());
+		Assert.assertEquals(bookSingle.getAvailable(), bookIns.getAvailable());
 	}
 
 	@When("The User submits a Book to be added to his Orders list")
@@ -109,13 +112,13 @@ public class Steps {
 		RequestSpecification request = RestAssured.given();
 		request.header("Authorization", "Bearer " + token).header("Content-Type", "application/json");
 		Map<String, String> mapOrders = new HashMap<>();
-		mapOrders.put("bookId", bookId);
+		mapOrders.put("bookId", String.valueOf(bookIns.getId()));
 		Faker fakeCat = new Faker();
 		mapOrders.put("customerName", fakeCat.cat().name());
 		JSONObject requestParamsOrders = new JSONObject(mapOrders);
 		response = request.body(requestParamsOrders).post("/orders");
 		jsonString = response.asString();
-		Map<String, String> order = JsonPath.from(jsonString).get("order");
+		Map<String, String> order = JsonPath.from(jsonString).get();
 		ordrId = order.get("orderId");
 	}
 
