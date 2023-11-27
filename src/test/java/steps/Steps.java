@@ -40,7 +40,7 @@ public class Steps {
         return Arrays.asList(arr); //or return Arrays.asList(new Gson().fromJson(s, clazz)); for a one-liner
     }
 
-    //	Java convert JSON String  has list of json objects to equivalent list of Java class Object.
+    //	Java convert JSON String  has json objects to equivalent Java class Object.
     public static <T> T stringToObject(String s, Class<T> clazz) {
         return new Gson().fromJson(s, clazz); //or return Arrays.asList(new Gson().fromJson(s, clazz)); for a one-liner
     }
