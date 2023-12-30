@@ -1,0 +1,31 @@
+name: Run REST Assured Tests
+
+on:
+  schedule:
+    - cron: '30 5 * * *'
+
+jobs:
+  restassured:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Set up JDK
+      uses: actions/setup-java@v2
+      with:
+        distribution: 'adopt'
+        java-version: '11'
+
+    - name: Build and test
+      run: |
+        ./mvnw clean verify
+      env:
+        MAVEN_OPTS: '-Dmaven.repo.local=.m2/repository'
+
+    - name: Post results to GitHub Pages (optional)
+      uses: peaceiris/actions-gh-pages@v3
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        publish_dir: ./target/site/allure-maven-plugin
