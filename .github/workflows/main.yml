@@ -24,8 +24,8 @@ jobs:
       env:
         MAVEN_OPTS: '-Dmaven.repo.local=.m2/repository'
 
-    - name: Post results to GitHub Pages (optional)
+    - name: Post results to GitHub Pages
       uses: peaceiris/actions-gh-pages@v3
       with:
-        github_token: ${{ secrets.GITHUB_TOKEN }}
-        publish_dir: ./target/site/allure-maven-plugin
+        github_token: ${{ secrets.restAssuredApiKey }}
+        publish_dir: ./target/
