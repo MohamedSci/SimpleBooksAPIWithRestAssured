@@ -102,27 +102,25 @@ This project automates API testing for the [Simple Books API](https://simple-boo
 ## Project Structure
 
 ```plaintext
-src/
-├── main/
-│   └── java/
-│       ├── api/
-│       │   └── SimpleBooksAPI.java     # API request implementations using Rest Assured
-│       ├── utils/
-│       │   └── APIClient.java          # Token management and authentication
+src/      
 ├── test/
+    ├── resources/
+    │   └── features/
+    │       └── features.feature
 │   └── java/
-│       ├── features/                   # BDD feature files
-│       ├── stepDefinitions/            # Step definitions for feature files
-│       ├── runners/                    # Cucumber test runner
-│       └── utils/
-│           └── Hooks.java              # Pre/post execution hooks
+│       ├── helper/                   # BDD feature files
+│                └── BookClo.java
+                  └── OrderClo.java  
+│       ├── runner/
+                  └── RunCucumberTest.java                      # Cucumber test runner
+│       └── steps/                       # Step definitions for feature files
+│           └── Steps.java              # Pre/post execution hooks
 ```
 
-- **`api/`**: Contains classes that interact with the API endpoints using Rest Assured.
 - **`features/`**: Holds the Gherkin (.feature) files that describe API test cases in BDD format.
-- **`stepDefinitions/`**: Contains the step definition classes where feature file steps are implemented.
-- **`runners/`**: Cucumber runners to trigger BDD tests.
-- **`utils/`**: Utility classes for token management, hooks, and other reusable logic.
+- **`steps/`**: Contains the step definition classes where feature file steps are implemented.
+- **`runner/`**: Cucumber runners to trigger BDD tests.
+- **`helper/`**: Utility classes for token management, hooks, and other reusable logic.
 
 ---
 
